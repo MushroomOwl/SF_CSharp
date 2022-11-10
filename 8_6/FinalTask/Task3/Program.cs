@@ -2,7 +2,7 @@
 {
     abstract public class DataProcessor {
         abstract public void Exec(FileInfo file);
-        abstract public void Exec(DirectoryInfo dir);
+        abstract public void Exec(DirectoryInfo dir, DateTime? lastAccess);
         abstract public void PrintProgressReport();
     }
 
@@ -61,8 +61,11 @@
                 failedToRemoveFiles++;
             }
         }
-        public override void Exec(DirectoryInfo dir) {
+        public override void Exec(DirectoryInfo dir, DateTime? lastAccess) {
             TimeSpan timeSinceLastAccessed = DateTime.Now - dir.LastAccessTime;
+            if (lastAccess != null) {
+                timeSinceLastAccessed = DateTime.Now - (DateTime)lastAccess;
+            }
             if (timeSinceLastAccessed.TotalMinutes <= fileTTLmin)
             {
                 skippedFolders++;
@@ -110,8 +113,12 @@
         DirectoryInfo[] dirs = directory.GetDirectories();
         foreach (DirectoryInfo dir in dirs)
         {
+            // Little messed up here, trying to delete dir
+            // after it was accessed so access time is almost now
+            // and dir won't be removed. Therefore here's this stub.
+            DateTime lastAccess = dir.LastAccessTime;
             FolderWalk(dir, proc);
-            proc.Exec(dir);
+            proc.Exec(dir, lastAccess);
         }
 
         FileInfo[] files = directory.GetFiles();
@@ -183,7 +190,7 @@
             }
         }
 
-        Cleaner cleanerProc = new Cleaner(1);
+        Cleaner cleanerProc = new Cleaner(30);
         FolderWalk(folderPath, cleanerProc);
 
         cleanerProc.PrintProgressReport();

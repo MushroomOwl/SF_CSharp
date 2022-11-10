@@ -9,7 +9,7 @@
             RecursiveRemove(dir);
             TimeSpan timeSinceLastAccessed = now - dir.LastAccessTime;
             Console.WriteLine("Directory {0} accessed {1} minutes ago", dir.ToString(), timeSinceLastAccessed.TotalMinutes);
-            if (timeSinceLastAccessed.TotalMinutes <= 1)
+            if (timeSinceLastAccessed.TotalMinutes <= 30)
             {
                 Console.WriteLine("Skipping...");
                 continue;
@@ -42,7 +42,7 @@
         {
             TimeSpan timeSinceLastAccessed = now - file.LastAccessTime;
             Console.WriteLine("File {0} accessed {1} minutes ago", file.ToString(), timeSinceLastAccessed.TotalMinutes);
-            if (timeSinceLastAccessed.TotalMinutes <= 1)
+            if (timeSinceLastAccessed.TotalMinutes <= 30)
             {
                 Console.WriteLine("Skipping...");
                 continue;
