@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
-
-class Program
+﻿class Program
 {
     public static long CalcSize(FileInfo file)
     {
@@ -39,22 +36,22 @@ class Program
         }
         catch (DirectoryNotFoundException ex)
         {
-            Console.WriteLine("Can't get size of {0} - directory not found: {1}", ex.Message);
+            Console.WriteLine("Can't get size of {0} - directory not found: {1}", path, ex.Message);
             return 0;
         }
         catch (FileNotFoundException ex)
         {
-            Console.WriteLine("Can't get size of {0} - file not found: {1}", ex.Message);
+            Console.WriteLine("Can't get size of {0} - file not found: {1}", path, ex.Message);
             return 0;
         }
         catch (UnauthorizedAccessException ex)
         {
-            Console.WriteLine("Can't get size of {0} - unexpected error: {1}", ex.Message);
+            Console.WriteLine("Can't get size of {0} - access error: {1}", path, ex.Message);
             return 0;
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Can't get size of {0} - unexpected error: {1}", ex.Message);
+            Console.WriteLine("Can't get size of {0} - unexpected error: {1}", path, ex.Message);
             return 0;
         }
     }
@@ -83,7 +80,6 @@ class Program
         }
 
         long obrainableSize = CalcSize(folderPath);
-
         Console.WriteLine("Estimated size is {0} bytes", obrainableSize);
     }
 }
