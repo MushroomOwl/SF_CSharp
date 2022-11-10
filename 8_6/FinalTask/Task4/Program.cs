@@ -41,7 +41,7 @@ namespace FinalTask
                 Console.WriteLine("Missing file error: {0}", ex.Message);
                 return null;
             }
-            catch (AccessViolationException ex)
+            catch (UnauthorizedAccessException ex)
             {
                 Console.WriteLine("Can't access file error: {0}", ex.Message);
                 return null;
@@ -67,7 +67,7 @@ namespace FinalTask
             {
                 // Do nothing
             }
-            catch (AccessViolationException ex)
+            catch (UnauthorizedAccessException ex)
             {
                 Console.WriteLine("Can't rewrite file, no access error: {0}", ex.Message);
                 return;
@@ -136,9 +136,9 @@ namespace FinalTask
                 }
                 catch (FileNotFoundException ex)
                 {
-                    Console.WriteLine("Can't create students db directory, no access error: {0}", ex.Message);
+                    Console.WriteLine("Can't create students db directory, directory not found: {0}", ex.Message);
                 }
-                catch (AccessViolationException ex)
+                catch (UnauthorizedAccessException ex)
                 {
                     Console.WriteLine("Can't create students db directory, no access error: {0}", ex.Message);
                     return;
