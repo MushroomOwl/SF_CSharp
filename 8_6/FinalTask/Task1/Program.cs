@@ -10,7 +10,7 @@ class Program
         while (true)
         {
             Console.Clear();
-            Console.WriteLine(firstTry ? "Input path to folder to clean: " : "Please input correct path to folder: ");
+            Console.Write(firstTry ? "Input path to folder to clean: " : "Please input correct path to folder: ");
             folderPath = Console.ReadLine();
             if (folderPath == null)
             {
@@ -69,6 +69,9 @@ class Program
             Console.ReadLine();
             try
             {
+                // It wasn't clear whether in Task 1 we should use recursive function
+                // or should check only folder access time. If we should then there's little
+                // to nothing difference between Task 1 and Task 3, so just for sake of variation I'll leave it here
                 dir.Delete(true);
             }
             catch (DirectoryNotFoundException ex)
@@ -104,7 +107,7 @@ class Program
             {
                 file.Delete();
             }
-            catch (DirectoryNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
                 Console.WriteLine("Can't remove file - not found exception: {0}", ex.Message);
                 continue;

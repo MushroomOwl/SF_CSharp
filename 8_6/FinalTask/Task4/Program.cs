@@ -94,7 +94,7 @@ namespace FinalTask
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(firstTry ? "Input students db file path: " : "Please input correct file path for students DB: ");
+                Console.Write(firstTry ? "Input students db file path: " : "Please input correct file path for students DB: ");
                 filepath = Console.ReadLine();
                 if (filepath == null)
                 {
@@ -134,7 +134,7 @@ namespace FinalTask
                 {
                     Directory.CreateDirectory(studentsFolderPath);
                 }
-                catch (FileNotFoundException ex)
+                catch (DirectoryNotFoundException ex)
                 {
                     Console.WriteLine("Can't create students db directory, directory not found: {0}", ex.Message);
                 }
