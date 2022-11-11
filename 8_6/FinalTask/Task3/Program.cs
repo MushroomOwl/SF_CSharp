@@ -96,7 +96,7 @@
             Console.WriteLine("CleanerProgressReport:");
             Console.WriteLine("\tEstimated folder size before cleaning: {0}", fullSize);
             Console.WriteLine("\tEstimated cleaned content size cleaning: {0}", cleanedSize);
-            Console.WriteLine("\tEstimated folder size after cleaning cleaning: {0}", fullSize - cleanedSize);
+            Console.WriteLine("\tEstimated folder size after cleaning: {0}", fullSize - cleanedSize);
 
             Console.WriteLine("\tFiles removed: {0}", removedFiles);
             Console.WriteLine("\tFiles failed to remove: {0}", failedToRemoveFiles);
