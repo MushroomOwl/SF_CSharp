@@ -47,8 +47,10 @@ public class Program
             {
                 intMode = Convert.ToInt32(mode);
             }
-            catch (Exception ex) {
-                if (mode == "quit") {
+            catch (Exception ex)
+            {
+                if (mode == "quit")
+                {
                     OnInputLoopInteruption();
                     throw new InputInterruptedException();
                 }
@@ -56,7 +58,8 @@ public class Program
                 {
                     throw new IncorrectSortMode("Sort mode should be number.");
                 }
-                else {
+                else
+                {
                     throw new IncorrectSortMode("Cannot convert sort mode value - unexpected error.");
                 }
             }
