@@ -68,7 +68,7 @@ class Group
         int sortModifier = mode == 1 ? 1 : -1;
         personList.Sort((Person a, Person b) =>
         {
-            return String.Compare(a.Fname, b.Fname) * sortModifier;
+            return String.Compare(a.LastName, b.LastName) * sortModifier;
         });
         OnSortFinish();
     }

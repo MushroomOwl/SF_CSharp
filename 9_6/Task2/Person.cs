@@ -1,14 +1,14 @@
 ﻿class Person
 {
-    public string Fname { get; set; }
+    public string LastName { get; set; }
 
-    public Person(string fname)
+    public Person(string lname)
     {
-        Fname = fname;
+        LastName = lname;
     }
 
     public void Info()
     {
-        Console.WriteLine(Fname);
+        Console.WriteLine(LastName);
     }
 }

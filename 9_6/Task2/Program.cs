@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using CustomExceptions;
 
 public class Program
@@ -9,7 +8,7 @@ public class Program
         Group people = new Group(5);
         people.GroupFullEvent += OnFullGroupHaltInput;
 
-        InputHandler.ContiniousReader<string>("Please enter persons fname:", people.AddPerson, (str) =>
+        InputHandler.ContiniousReader<string>("Please enter persons last name:", people.AddPerson, (str) =>
         {
             string pattern = "[^a-zA-Z\\-]";
 
