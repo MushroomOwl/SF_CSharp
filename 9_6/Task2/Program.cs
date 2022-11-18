@@ -6,7 +6,7 @@ public class Program
 {
     public static void Main()
     {
-        Group people = new Group(2);
+        Group people = new Group(5);
         people.GroupFullEvent += OnFullGroupHaltInput;
 
         InputHandler.ContiniousReader<string>("Please enter persons fname:", people.AddPerson, (str) =>
