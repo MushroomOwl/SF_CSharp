@@ -1,127 +1,38 @@
-﻿class Program
+﻿using Task2Commons;
+using Task2Calculation;
+
+class Program
 {
-    interface ISummarizer<T>
-    {
-        T Sum(T x, T y, ILogger? logger);
-    }
-
-    interface ISubtractor<T>
-    {
-        T Subtract(T x, T y, ILogger? logger);
-    }
-
-    interface IMultiplier<T>
-    {
-        T Multiply(T x, T y, ILogger? logger);
-    }
-
-    interface IIntDivider<T>
-    {
-        T Divide(T x, T y, ILogger? logger);
-    }
-
-    class Calcint : ISummarizer<int>, ISubtractor<int>, IMultiplier<int>, IIntDivider<int>
-    {
-        int ISummarizer<int>.Sum(int x, int y, ILogger? logger)
-        {
-            int result = x + y;
-            if (logger != null) logger.Event(string.Format("x + y = {0}", result));
-            return result;
-        }
-
-        int ISubtractor<int>.Subtract(int x, int y, ILogger? logger)
-        {
-            int result = x - y;
-            if (logger != null) logger.Event(string.Format("x - y = {0}", result));
-            return result;
-        }
-
-        int IMultiplier<int>.Multiply(int x, int y, ILogger? logger)
-        {
-            int result = x * y;
-            if (logger != null) logger.Event(string.Format("x * y = {0}", result));
-            return result;
-        }
-
-        int IIntDivider<int>.Divide(int x, int y, ILogger? logger)
-        {
-            try
-            {
-                int result = x / 0;
-                if (logger != null) logger.Event(string.Format("x / y = {0}", result));
-                return result;
-            }
-            catch (Exception ex) {
-                if (logger != null) logger.Error(ex.GetType() + " - " + ex.Message);
-                return 0;
-            }
-        }
-    }
-
-    interface IConsoleReader
-    {
-        int Read();
-    }
-
-    interface ILogger
-    {
-        void Event(string message);
-        void Error(string message);
-    }
-
-    class ConsoleProcessor : IConsoleReader, ILogger
-    {
-        static ConsoleColor ErrorLogColor = ConsoleColor.Red;
-        static ConsoleColor EventLogColor = ConsoleColor.Blue;
-
-        public int Read()
-        {
-            bool firstTry = true;
-            while (true)
-            {
-                try
-                {
-                    Console.Write(firstTry ? "Input int value: " : "Please input correct integer value: ");
-                    string? input = Console.ReadLine();
-                    return Convert.ToInt32(input);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Input exception - {0}: {1}", ex.GetType(), ex.Message);
-                    firstTry = false;
-                }
-            }
-        }
-
-        public void Event(string message)
-        {
-            Console.ForegroundColor = EventLogColor;
-            Console.WriteLine("LOG: " + message);
-            Console.ResetColor();
-        }
-
-        public void Error(string message)
-        {
-            Console.ForegroundColor = ErrorLogColor;
-            Console.WriteLine("ERROR: " + message);
-            Console.ResetColor();
-        }
-    }
-
     static void Main()
     {
-        ISummarizer<int> sumFunc = new Calcint();
-        ISubtractor<int> subtractFunc = new Calcint();
-        IMultiplier<int> multiplierFunc = new Calcint();
-        IIntDivider<int> dividerFunc = new Calcint();
+        // Creating class instance for every function
+        ILogger logger = new Logger();
 
-        ConsoleProcessor consoleProc = new ConsoleProcessor();
-        int x = consoleProc.Read();
-        int y = consoleProc.Read();
+        ISummarizer<int> sumFunc = new IntCalc();
+        ISubtractor<int> subtractFunc = new IntCalc();
+        IMultiplier<int> multiplierFunc = new IntCalc();
+        IIntDivider<int> dividerFunc = new IntCalc();
 
-        sumFunc.Sum(x, y, consoleProc);
-        subtractFunc.Subtract(x, y, consoleProc);
-        multiplierFunc.Multiply(x, y, consoleProc);
-        dividerFunc.Divide(x, y, consoleProc);
+        IConsoleReader consoleProc = new ConsoleReader();
+
+        consoleProc.Read(out int x, logger, "x");
+        consoleProc.Read(out int y, logger, "y");
+
+        sumFunc.Sum(x, y, logger);
+        subtractFunc.Subtract(x, y, logger);
+        multiplierFunc.Multiply(x, y, logger);
+        dividerFunc.Divide(x, y, logger);
+
+        Console.WriteLine("------------------------------------------------------");
+
+        // Using single class instance to execute all functions
+        consoleProc.Read(out x, logger, "x");
+        consoleProc.Read(out y, logger, "y");
+
+        IntCalc calc = new IntCalc();
+        ((ISummarizer<int>)calc).Sum(x, y, logger);
+        ((ISubtractor<int>)calc).Subtract(x, y, logger);
+        ((IMultiplier<int>)calc).Multiply(x, y, logger);
+        ((IIntDivider<int>)calc).Divide(x, y, logger);
     }
 }
