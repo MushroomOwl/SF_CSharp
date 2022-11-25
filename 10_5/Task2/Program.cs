@@ -5,15 +5,14 @@ class Program
 {
     static void Main()
     {
-        // Creating class instance for every function
+        IConsoleReader consoleProc = new ConsoleReader();
         ILogger logger = new Logger();
 
+        // Creating class instance for every function
         ISummarizer<int> sumFunc = new IntCalc();
         ISubtractor<int> subtractFunc = new IntCalc();
         IMultiplier<int> multiplierFunc = new IntCalc();
         IIntDivider<int> dividerFunc = new IntCalc();
-
-        IConsoleReader consoleProc = new ConsoleReader();
 
         consoleProc.Read(out int x, logger, "x");
         consoleProc.Read(out int y, logger, "y");

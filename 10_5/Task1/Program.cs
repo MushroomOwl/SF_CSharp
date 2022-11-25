@@ -5,12 +5,13 @@ class Program
 {
     static void Main()
     {
+        IConsoleReader reader = new ConsoleReaderInt();
+
         // Creating class instance for every function
         ISummarizer<int> sumFunc = new IntCalc();
         ISubtractor<int> subtractFunc = new IntCalc();
         IMultiplier<int> multiplierFunc = new IntCalc();
 
-        IConsoleReader reader = new ConsoleReaderInt();
         int x = reader.ReadValue();
         int y = reader.ReadValue();
 
