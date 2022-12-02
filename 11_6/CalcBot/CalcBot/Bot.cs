@@ -5,12 +5,14 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using CalcBot.Utilities;
 
 namespace CaclBot
 {
     internal class Bot : BackgroundService
     {
         private ITelegramBotClient _telegramClient;
+        private ILogger _logger;
 
         private InlineKeyboardController _inlineKeyboardController;
         private TextMessageController _textMessageController;
@@ -18,6 +20,7 @@ namespace CaclBot
 
         public Bot(
             ITelegramBotClient telegramClient,
+            ILogger logger,
             InlineKeyboardController inlineKeyboardController,
             TextMessageController textMessageController,
             DefaultMessageController defaultMessageController)
@@ -26,6 +29,7 @@ namespace CaclBot
             _inlineKeyboardController = inlineKeyboardController;
             _textMessageController = textMessageController;
             _defaultMessageController = defaultMessageController;
+            _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -36,7 +40,7 @@ namespace CaclBot
                 new ReceiverOptions() { AllowedUpdates = { } },
                 cancellationToken: stoppingToken);
 
-            Console.WriteLine("Bot ready");
+            _logger.Event("Bot ready");
         }
 
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -70,8 +74,8 @@ namespace CaclBot
                 _ => exception.ToString()
             };
 
-            Console.WriteLine(errorMessage);
-            Console.WriteLine("Waiting for 10 seconds before retry...");
+            _logger.Error(errorMessage);
+            _logger.Event("Waiting for 10 seconds before retry...");
             Thread.Sleep(10000);
 
             return Task.CompletedTask;
