@@ -1,0 +1,2 @@
+﻿ - List performs much better if we're talking about Add (or AddLast in LinkedList) which is expected
+ - But if we're talking about inserting data in the middle of List/LinkedList then List becomes extremely slow and LinkedList, as expected, performs as well as for AddLast operation
