@@ -2,16 +2,32 @@
 
 class Program
 {
-    const string fileName = "Text1.txt";
-    const int iterations = 20;
+    const string DefaultFileName = "Text1.txt";
+    const int DefaultIterations = 20;
     static Stopwatch stopWatch = new Stopwatch();
 
     static void Main()
     {
+        Console.Write("Input path to text file (press enter for \"Text1.txt\"): ");
+        string filename = Console.ReadLine();
+
+        if (filename == null || filename.Length == 0)
+        {
+            filename = DefaultFileName;
+        }
+
+        Console.Write("Input iterations count (press enter for 20): ");
+        string iterationsStr = Console.ReadLine();
+        bool isNumber = int.TryParse(iterationsStr, out int iterations);
+        if (!isNumber) {
+            Console.WriteLine("Not a number, using default - {0}", DefaultIterations);
+            iterations = DefaultIterations;
+        }
+
         byte[] data = new byte[0];
         try
         {
-            data = File.ReadAllBytes(fileName);
+            data = File.ReadAllBytes(filename);
         }
         catch (Exception ex) {
             Console.WriteLine("Can't read file, got exception:");
@@ -27,17 +43,17 @@ class Program
         
         stopWatch.Start();
 
-        ShowTimeEstimation("List.Add", data, TimeForListAdd);
-        ShowTimeEstimation("LinkedList.AddFirst", data, TimeForLinkedListAddFirst);
-        ShowTimeEstimation("LinkedList.AddLast", data, TimeForLinkedListAddLast);
+        ShowTimeEstimation("List.Add", data, iterations, TimeForListAdd);
+        ShowTimeEstimation("LinkedList.AddFirst", data, iterations, TimeForLinkedListAddFirst);
+        ShowTimeEstimation("LinkedList.AddLast", data, iterations, TimeForLinkedListAddLast);
 
-        // Extremely slow
+        // Extremely
         // ShowTimeEstimation("List.Insert", data, TimeForListInsertAfterFirst);
 
-        ShowTimeEstimation("LinkedList.AddAfter", data, TimeForLinkedListAddAfter);
+        ShowTimeEstimation("LinkedList.AddAfter", data, iterations, TimeForLinkedListAddAfter);
     }
 
-    static void ShowTimeEstimation(string estimatedFunc, byte[] data, Func<byte[], double> func) {
+    static void ShowTimeEstimation(string estimatedFunc, byte[] data, int iterations, Func<byte[], double> func) {
         double[] timesArr = new double[iterations];
         for (int i = 0; i < iterations; i++)
         {
@@ -45,12 +61,15 @@ class Program
         }
 
         Console.WriteLine("{0} ({1} elements) time(ms): ", estimatedFunc, data.Length);
-        Console.WriteLine("\t Total:  {0}", Total(timesArr));
-        Console.WriteLine("\t Avg:    {0}", Average(timesArr));
-        Console.WriteLine("\t Median: {0}", Median(timesArr));
+        double total = ArraySum(timesArr);
+        double avg = ArrayAverage(timesArr);
+        double median = ArrayMedian(timesArr);
+        Console.WriteLine("\t Total:  {0} / {1} per symbol", total, total / data.Length);
+        Console.WriteLine("\t Avg:    {0} / {1} per symbol", avg, avg / data.Length);
+        Console.WriteLine("\t Median: {0} / {1} per symbol", median, median / data.Length);
     }
 
-    static double Total(double[] arr)
+    static double ArraySum(double[] arr)
     {
         double total = 0;
         for (int i = 0; i < arr.Length; i++)
@@ -60,11 +79,11 @@ class Program
         return total;
     }
 
-    static double Average(double[] arr) {
-        return Total(arr) / arr.Length;
+    static double ArrayAverage(double[] arr) {
+        return ArraySum(arr) / arr.Length;
     }
 
-    static double Median(double[] arr)
+    static double ArrayMedian(double[] arr)
     {
         return arr[arr.Length / 2];
     }

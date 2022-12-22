@@ -2,14 +2,22 @@
 
 class Program
 {
-    const string fileName = "Text1.txt";
+    const string DefaultFileName = "Text1.txt";
 
     static void Main()
     {
+        Console.Write("Input path to text file (press enter for \"Text1.txt\"): ");
+        string filename = Console.ReadLine();
+
+        if (filename == null || filename.Length == 0)
+        {
+            filename = DefaultFileName;
+        }
+
         string[] lines = new string[0];
         try
         {
-            lines = File.ReadAllLines(fileName);
+            lines = File.ReadAllLines(filename);
         }
         catch (Exception ex)
         {
